@@ -16,6 +16,8 @@ class CustomDataTypeGVK extends CustomDataType
 	conceptName = ''
 	# mapquest api-key
 	mapquest_api_key = '';
+	# protocol
+	protocol = location.protocol;
 
 	#######################################################################
 	# return name of plugin
@@ -107,7 +109,7 @@ class CustomDataTypeGVK extends CustomDataType
 		    gvk_xhr.abort()
 		# start new request
 		# build searchurl
-		url = 'http://ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions
+		url = protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions
 		gvk_xhr = new (CUI.XHR)(url: url)
 		gvk_xhr.start().done((data, status, statusText) ->
 
