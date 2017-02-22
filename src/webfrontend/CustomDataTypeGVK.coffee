@@ -97,78 +97,83 @@ class CustomDataTypeGVK extends CustomDataType
      __updateSuggestionsMenu: (cdata, cdata_form, suggest_Menu, gvk_xhr) ->
           that = @
 
-          gvk_searchterm = cdata_form.getFieldsByName("gvkSearchBar")[0].getValue()
-          gvk_countSuggestions = cdata_form.getFieldsByName("gvkSelectCountOfSuggestions")[0].getValue()
+          delayMillisseconds = 200
 
-          if gvk_searchterm.length == 0
-              return
+          setTimeout ( ->
 
-          # run autocomplete-search via xhr
-          if gvk_xhr != undefined
-              # abort eventually running request
-              gvk_xhr.abort()
-          # start new request
-          # build searchurl
-          url = location.protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions
-          gvk_xhr = new (CUI.XHR)(url: url)
-          gvk_xhr.start().done((data, status, statusText) ->
+              gvk_searchterm = cdata_form.getFieldsByName("gvkSearchBar")[0].getValue()
+              gvk_countSuggestions = cdata_form.getFieldsByName("gvkSelectCountOfSuggestions")[0].getValue()
 
-              CUI.debug 'OK', gvk_xhr.getXHR(), gvk_xhr.getResponseHeaders()
+              if gvk_searchterm.length == 0
+                  return
 
-              # create new menu with suggestions
-              menu_items = []
-              # the actual Featureclass
-              actualFclass = ''
-              for suggestion, key in data[1]
-                   do(key) ->
-                        if (actualFclass == '' || actualFclass != data[2][key])
-                             actualFclass = data[2][key]
-                             item =
-                                  divider: true
-                             menu_items.push item
-                             item =
-                                  label: actualFclass
-                             menu_items.push item
-                             item =
-                                  divider: true
-                             menu_items.push item
-                        item =
-                             text: suggestion
-                             value: data[3][key]
+              # run autocomplete-search via xhr
+              if gvk_xhr != undefined
+                  # abort eventually running request
+                  gvk_xhr.abort()
+              # start new request
+              # build searchurl
+              url = location.protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions
+              gvk_xhr = new (CUI.XHR)(url: url)
+              gvk_xhr.start().done((data, status, statusText) ->
 
-                        menu_items.push item
+                  CUI.debug 'OK', gvk_xhr.getXHR(), gvk_xhr.getResponseHeaders()
 
-              # set new items to menu
-              itemList =
-                   onClick: (ev2, btn) ->
-                        # lock in save data
-                        cdata.conceptURI = btn.getOpt("value")
-                        cdata.conceptName = btn.getText()
-                        # lock in form
-                        cdata_form.getFieldsByName("conceptName")[0].storeValue(cdata.conceptName).displayValue()
-                        # nach eadb5-Update durch "setText" ersetzen und "__checkbox" rausnehmen
-                        cdata_form.getFieldsByName("conceptURI")[0].__checkbox.setText(cdata.conceptURI)
-                        cdata_form.getFieldsByName("conceptURI")[0].show()
+                  # create new menu with suggestions
+                  menu_items = []
+                  # the actual Featureclass
+                  actualFclass = ''
+                  for suggestion, key in data[1]
+                       do(key) ->
+                            if (actualFclass == '' || actualFclass != data[2][key])
+                                 actualFclass = data[2][key]
+                                 item =
+                                      divider: true
+                                 menu_items.push item
+                                 item =
+                                      label: actualFclass
+                                 menu_items.push item
+                                 item =
+                                      divider: true
+                                 menu_items.push item
+                            item =
+                                 text: suggestion
+                                 value: data[3][key]
 
-                        # clear searchbar
-                        cdata_form.getFieldsByName("gvkSearchBar")[0].setValue('')
-                   items: menu_items
+                            menu_items.push item
 
-              # if no hits set "empty" message to menu
-              if itemList.items.length == 0
-                   itemList =
-                        items: [
-                             text: "kein Treffer"
-                             value: undefined
-                        ]
+                  # set new items to menu
+                  itemList =
+                       onClick: (ev2, btn) ->
+                            # lock in save data
+                            cdata.conceptURI = btn.getOpt("value")
+                            cdata.conceptName = btn.getText()
+                            # lock in form
+                            cdata_form.getFieldsByName("conceptName")[0].storeValue(cdata.conceptName).displayValue()
+                            # nach eadb5-Update durch "setText" ersetzen und "__checkbox" rausnehmen
+                            cdata_form.getFieldsByName("conceptURI")[0].__checkbox.setText(cdata.conceptURI)
+                            cdata_form.getFieldsByName("conceptURI")[0].show()
 
-              suggest_Menu.setItemList(itemList)
+                            # clear searchbar
+                            cdata_form.getFieldsByName("gvkSearchBar")[0].setValue('')
+                       items: menu_items
 
-              suggest_Menu.show()
+                  # if no hits set "empty" message to menu
+                  if itemList.items.length == 0
+                       itemList =
+                            items: [
+                                 text: "kein Treffer"
+                                 value: undefined
+                            ]
 
-          )
-          .fail (data, status, statusText) ->
-              CUI.debug 'FAIL', gvk_xhr.getXHR(), gvk_xhr.getResponseHeaders()
+                  suggest_Menu.setItemList(itemList)
+
+                  suggest_Menu.show()
+
+              )
+              .fail (data, status, statusText) ->
+                  CUI.debug 'FAIL', gvk_xhr.getXHR(), gvk_xhr.getResponseHeaders()
+          ), delayMillisseconds
 
 
      #######################################################################
