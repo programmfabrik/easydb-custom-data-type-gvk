@@ -48,7 +48,7 @@ class CustomDataTypeGVK extends CustomDataType
       #######################################################################
       # buttons, which open and close popover
       __renderEditorInputPopover: (data, cdata) ->
-        @__layout = new HorizontalLayout
+        layout = new HorizontalLayout
           left:
             content:
                 new Buttonbar(
@@ -59,7 +59,7 @@ class CustomDataTypeGVK extends CustomDataType
                           group: "groupA"
 
                           onClick: (ev, btn) =>
-                            @showEditPopover(btn, cdata, data)
+                            @showEditPopover(btn, cdata, layout)
 
                       new Button
                           text: ""
@@ -73,28 +73,31 @@ class CustomDataTypeGVK extends CustomDataType
                             }
                             data[@name()] = cdata
                             # trigger form change
+                            @__updateResult(cdata, layout)
                             Events.trigger
                               node: @__layout
                               type: "editor-changed"
-                            @__updateGVKResult(cdata)
+                            Events.trigger
+                              node: layout
+                              type: "editor-changed"
                   ]
                 )
           center: {}
           right: {}
-        @__updateGVKResult(cdata)
-        @__layout
+        @__updateResult(cdata, layout)
+        layout
 
 
      #######################################################################
      # update result in Masterform
-     __updateGVKResult: (cdata) ->
+     __updateResult: (cdata, layout) ->
           btn = @__renderButtonByData(cdata)
-          @__layout.replace(btn, "right")
+          layout.replace(btn, "right")
 
 
      #######################################################################
      # handle suggestions-menu
-     __updateSuggestionsMenu: (cdata, cdata_form, suggest_Menu, gvk_xhr) ->
+     __updateSuggestionsMenu: (cdata, cdata_form, suggest_Menu, searchsuggest_xhr) ->
           that = @
 
           delayMillisseconds = 200
@@ -102,22 +105,22 @@ class CustomDataTypeGVK extends CustomDataType
           setTimeout ( ->
 
               gvk_searchterm = cdata_form.getFieldsByName("gvkSearchBar")[0].getValue()
-              gvk_countSuggestions = cdata_form.getFieldsByName("gvkSelectCountOfSuggestions")[0].getValue()
+              gvk_countSuggestions = cdata_form.getFieldsByName("countOfSuggestions")[0].getValue()
 
               if gvk_searchterm.length == 0
                   return
 
               # run autocomplete-search via xhr
-              if gvk_xhr != undefined
+              if searchsuggest_xhr != undefined
                   # abort eventually running request
-                  gvk_xhr.abort()
+                  searchsuggest_xhr.abort()
               # start new request
               # build searchurl
               url = location.protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions
-              gvk_xhr = new (CUI.XHR)(url: url)
-              gvk_xhr.start().done((data, status, statusText) ->
+              searchsuggest_xhr = new (CUI.XHR)(url: url)
+              searchsuggest_xhr.start().done((data, status, statusText) ->
 
-                  CUI.debug 'OK', gvk_xhr.getXHR(), gvk_xhr.getResponseHeaders()
+                  CUI.debug 'OK', searchsuggest_xhr.getXHR(), searchsuggest_xhr.getResponseHeaders()
 
                   # create new menu with suggestions
                   menu_items = []
@@ -172,32 +175,8 @@ class CustomDataTypeGVK extends CustomDataType
 
               )
               .fail (data, status, statusText) ->
-                  CUI.debug 'FAIL', gvk_xhr.getXHR(), gvk_xhr.getResponseHeaders()
+                  CUI.debug 'FAIL', searchsuggest_xhr.getXHR(), searchsuggest_xhr.getResponseHeaders()
           ), delayMillisseconds
-
-
-     #######################################################################
-     # reset form
-     __resetGVKForm: (cdata, cdata_form) ->
-          # clear variables
-          cdata.conceptName = ''
-          cdata.conceptURI = ''
-
-          # reset type-select
-          cdata_form.getFieldsByName("gvkSelectFeatureClasses")[0].setValue("DifferentiatedPerson")
-
-          # reset count of suggestions
-          cdata_form.getFieldsByName("gvkSelectCountOfSuggestions")[0].setValue(20)
-
-          # reset searchbar
-          cdata_form.getFieldsByName("gvkSearchBar")[0].setValue("")
-
-          # reset result name
-          cdata_form.getFieldsByName("conceptName")[0].storeValue("").displayValue()
-
-          # reset and hide result-uri-button
-          cdata_form.getFieldsByName("conceptURI")[0].__checkbox.setText("")
-          cdata_form.getFieldsByName("conceptURI")[0].hide()
 
 
      #######################################################################
@@ -217,20 +196,20 @@ class CustomDataTypeGVK extends CustomDataType
 
      #######################################################################
      # show popover and fill it with the form-elements
-     showEditPopover: (btn, cdata, data) ->
+     showEditPopover: (btn, cdata, layout) ->
 
           # init xhr
-          gvk_xhr = undefined
+          searchsuggest_xhr = undefined
 
           # set default value for count of suggestions
-          cdata.gvkSelectCountOfSuggestions = 20
+          cdata.countOfSuggestions = 20
           cdata_form = new Form
                data: cdata
                fields: @__getEditorFields(cdata)
                onDataChanged: =>
-                    @__updateGVKResult(cdata)
-                    @__setEditorFieldStatus(cdata, @__layout)
-                    @__updateSuggestionsMenu(cdata, cdata_form, suggest_Menu, gvk_xhr)
+                    @__updateResult(cdata, layout)
+                    @__setEditorFieldStatus(cdata, layout)
+                    @__updateSuggestionsMenu(cdata, cdata_form, suggest_Menu, searchsuggest_xhr)
           .start()
 
           # init suggestmenu
@@ -245,23 +224,6 @@ class CustomDataTypeGVK extends CustomDataType
                pane:
                     # titel of popovers
                     header_left: new LocaLabel(loca_key: "custom.data.type.gvk.edit.modal.title")
-                    # "save"-button
-                    footer_right: new Button
-                        text: "Übernehmen"
-                        onClick: =>
-                             # put data to savedata
-                             data[@name()] = {
-                                  conceptName : cdata.conceptName
-                                  conceptURI : cdata.conceptURI
-                             }
-                             # close popup
-                             @popover.destroy()
-                    # "reset"-button
-                    footer_left: new Button
-                        text: "Zurücksetzen"
-                        onClick: =>
-                             @__resetGVKForm(cdata, cdata_form)
-                             @__updateGVKResult(cdata)
                     content: cdata_form
           .show()
 
@@ -294,7 +256,7 @@ class CustomDataTypeGVK extends CustomDataType
                              text: '100 Vorschläge'
                          )
                     ]
-                    name: 'gvkSelectCountOfSuggestions'
+                    name: 'countOfSuggestions'
                }
                {
                     type: Input
@@ -349,28 +311,23 @@ class CustomDataTypeGVK extends CustomDataType
                         nameCheck = if cdata.conceptName then cdata.conceptName.trim() else undefined
 
                         if uriCheck and nameCheck
-                                console.debug "getDataStatus: OK "
                                 return "ok"
 
                         if cdata.conceptURI.trim() == '' and cdata.conceptName.trim() == ''
-                                console.debug "getDataStatus: empty"
                                 return "empty"
 
-                        console.debug "getDataStatus returns invalid"
                         return "invalid"
                 else
                         cdata = {
                                     conceptName : ''
                                     conceptURI : ''
                                 }
-                        console.debug "getDataStatus: empty"
                         return "empty"
             else
                     cdata = {
                                 conceptName : ''
                                 conceptURI : ''
                             }
-                    console.debug "getDataStatus: empty"
                     return "empty"
 
 
@@ -378,29 +335,32 @@ class CustomDataTypeGVK extends CustomDataType
      #######################################################################
      # renders the "result" in original form (outside popover)
      __renderButtonByData: (cdata) ->
-          # when status is empty or invalid --> message
-          switch @getDataStatus(cdata)
-               when "empty"
-                    return new EmptyLabel(text: $$("custom.data.type.gvk.edit.no_gvk")).DOM
-               when "invalid"
-                    return new EmptyLabel(text: $$("custom.data.type.gvk.edit.no_valid_gvk")).DOM
 
-          # if status is ok
-          conceptURI = CUI.parseLocation(cdata.conceptURI).url
+        # when status is empty or invalid --> message
 
-          # output Button with Name of literature-entry
-          new ButtonHref
-               appearance: "link"
-               href: cdata.conceptURI
-               target: "_blank"
-               text: cdata.conceptName
-          .DOM
+        switch @getDataStatus(cdata)
+             when "empty"
+                  return new EmptyLabel(text: $$("custom.data.type.gvk.edit.no_gvk")).DOM
+             when "invalid"
+                  return new EmptyLabel(text: $$("custom.data.type.gvk.edit.no_valid_gvk")).DOM
+
+        # if status is ok
+        conceptURI = CUI.parseLocation(cdata.conceptURI).url
+
+        # output Button with Name of literature-entry
+        new ButtonHref
+             appearance: "link"
+             href: cdata.conceptURI
+             target: "_blank"
+             text: cdata.conceptName
+        .DOM
 
 
      #######################################################################
      # is called, when record is being saved by user
      getSaveData: (data, save_data, opts) ->
           cdata = data[@name()] or data._template?[@name()]
+
           switch @getDataStatus(cdata)
                when "invalid"
                     throw InvalidSaveDataException
