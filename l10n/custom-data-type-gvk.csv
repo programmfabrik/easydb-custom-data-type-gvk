@@ -7,7 +7,7 @@
 "custom.data.type.gvk.config.option.mask.editor_style.value.popover","Popover",
 "custom.data.type.gvk.modal.form.url.placeholder","GVK-Verknüpfung",
 "custom.data.type.gvk.modal.form.text.label","Text",
-"custom.data.type.gvk.edit.modal.title|text","Web-GVK konfigurieren",
+"custom.data.type.gvk.edit.modal.title|text","Literatur-Verknüpfung mit dem GVK",
 "custom.data.type.gvk.edit.no_valid_gvk","Keine valide GVK-Verknüpfung",
 "custom.data.type.gvk.edit.no_gvk","Keine GVK-Verknüpfung gesetzt",
 "custom.data.type.gvk.modal.form.text.featureclasses","Featureklasse"
