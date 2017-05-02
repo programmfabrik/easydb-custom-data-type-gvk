@@ -5,8 +5,8 @@ plugin:
     api-version:
       require: 1
   webfrontend:
-    url: build/webfrontend/custom-data-type-gvk.js
-    l10n: build/webfrontend/l10n/
+    url: custom-data-type-gvk.js
+    l10n: l10n/
 custom_types:
   gvk:
     elasticsearch:
@@ -14,6 +14,40 @@ custom_types:
         type: object
         properties:
           conceptName:
+            type: string
+            index: no
+            fields:
+              exact:
+                type: string
+                term_vector: with_positions_offsets
+                analyzer: ez_exact_analyzer
+              folded:
+                type: string
+                term_vector: with_positions_offsets
+                index_analyzer: ez_text_folded_analyzer
+              fulltext:
+                type: string
+                term_vector: with_positions_offsets
+                index_analyzer: ez_text_fulltext_index_analyzer
+                search_analyzer: ez_text_fulltext_search_analyzer
+              phrase:
+                type: string
+                term_vector: with_positions_offsets
+                index_analyzer: ez_text_phrase_index_analyzer
+                search_analyzer: ez_text_fulltext_search_analyzer
+              sort:
+                type: string
+                term_vector: with_positions_offsets
+                index_analyzer: sort_de-DE
+              suggest:
+                type: string
+                term_vector: with_positions_offsets
+                index_analyzer: ez_text_suggest_analyzer
+              token:
+                type: string
+                term_vector: with_positions_offsets
+                analyzer: ez_text_token_analyzer
+          conceptURI:
             type: string
             index: no
             fields:
