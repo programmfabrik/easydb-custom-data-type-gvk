@@ -102,7 +102,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
      __getEditorFields: (cdata) ->
           fields = [
                {
-                    type: Select
+                    type: CUI.Select
                     class: "commonPlugin_Select"
                     undo_and_changed_support: false
                     form:
@@ -128,7 +128,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                     name: 'countOfSuggestions'
                }
                {
-                    type: Input
+                    type: CUI.Input
                     class: "commonPlugin_Input"
                     undo_and_changed_support: false
                     form:
@@ -139,16 +139,16 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                {
                     form:
                          label: "Gewählter Eintrag"
-                    type: Output
+                    type: CUI.Output
                     name: "conceptName"
                     data: {conceptName: cdata.conceptName}
                }
                {
                     form:
                          label: "Verknüpfter Katalogeintrag"
-                    type: FormButton
+                    type: CUI.FormButton
                     name: "conceptURI"
-                    icon: new Icon(class: "fa-lightbulb-o")
+                    icon: new CUI.Icon(class: "fa-lightbulb-o")
                     text: cdata.conceptURI
                     onClick: (evt,button) =>
                          window.open cdata.conceptURI, "_blank"
@@ -168,15 +168,15 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
 
         switch @getDataStatus(cdata)
              when "empty"
-                  return new EmptyLabel(text: $$("custom.data.type.gvk.edit.no_gvk")).DOM
+                  return new CUI.EmptyLabel(text: $$("custom.data.type.gvk.edit.no_gvk")).DOM
              when "invalid"
-                  return new EmptyLabel(text: $$("custom.data.type.gvk.edit.no_valid_gvk")).DOM
+                  return new CUI.EmptyLabel(text: $$("custom.data.type.gvk.edit.no_valid_gvk")).DOM
 
         # if status is ok
         conceptURI = CUI.parseLocation(cdata.conceptURI).url
 
         # output Button with Name of literature-entry
-        new ButtonHref
+        new CUI.Button
              appearance: "link"
              href: cdata.conceptURI
              target: "_blank"
