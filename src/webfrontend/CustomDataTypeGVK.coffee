@@ -37,8 +37,6 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
               searchsuggest_xhr.xhr = new (CUI.XHR)(url: url)
               searchsuggest_xhr.xhr.start().done((data, status, statusText) ->
 
-                  CUI.debug 'OK', searchsuggest_xhr.xhr.getXHR(), searchsuggest_xhr.xhr.getResponseHeaders()
-
                   # create new menu with suggestions
                   menu_items = []
                   # the actual Featureclass
@@ -91,8 +89,6 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                   suggest_Menu.show()
 
               )
-              .fail (data, status, statusText) ->
-                  CUI.debug 'FAIL', searchsuggest_xhr.xhr.getXHR(), searchsuggest_xhr.xhr.getResponseHeaders()
           ), delayMillisseconds
 
 
