@@ -106,19 +106,19 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                     options: [
                          (
                              value: 10
-                             text: '10 Vorschläge'
+                             text: '10 ' + $$('custom.data.type.gvk.modal.form.text.count_short')
                          )
                          (
                              value: 20
-                             text: '20 Vorschläge'
+                             text: '20 ' + $$('custom.data.type.gvk.modal.form.text.count_short')
                          )
                          (
                              value: 50
-                             text: '50 Vorschläge'
+                             text: '50 ' + $$('custom.data.type.gvk.modal.form.text.count_short')
                          )
                          (
                              value: 100
-                             text: '100 Vorschläge'
+                             text: '100 ' + $$('custom.data.type.gvk.modal.form.text.count_short')
                          )
                     ]
                     name: 'countOfSuggestions'
@@ -134,14 +134,14 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                }
                {
                     form:
-                         label: "Gewählter Eintrag"
+                         label: $$('custom.data.type.gvk.modal.form.text.result.label')
                     type: CUI.Output
                     name: "conceptName"
                     data: {conceptName: cdata.conceptName}
                }
                {
                     form:
-                         label: "Verknüpfter Katalogeintrag"
+                         label: $$('custom.data.type.gvk.modal.form.text.uri.label')
                     type: CUI.FormButton
                     name: "conceptURI"
                     icon: new CUI.Icon(class: "fa-lightbulb-o")
@@ -172,11 +172,20 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
         conceptURI = CUI.parseLocation(cdata.conceptURI).url
 
         # output Button with Name of literature-entry
-        new CUI.Button
+        new CUI.ButtonHref
              appearance: "link"
              href: cdata.conceptURI
              target: "_blank"
              text: cdata.conceptName
         .DOM
+
+     #######################################################################
+     # zeige die gewählten Optionen im Datenmodell unter dem Button an
+     getCustomDataOptionsInDatamodelInfo: (custom_settings) ->
+        tags = []
+
+        #tags.push " - Ohne Optionen - "
+
+        tags
 
 CustomDataType.register(CustomDataTypeGVK)
