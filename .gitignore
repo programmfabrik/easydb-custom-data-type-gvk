@@ -1,0 +1,8 @@
+build-stamp-*
+build
+*~
+*.coffee.js
+*.spec.coffee
+
+node_modules/
+.idea
