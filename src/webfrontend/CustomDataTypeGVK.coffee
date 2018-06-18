@@ -56,6 +56,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                                  menu_items.push item
                             item =
                                  text: suggestion
+                                 #center: new CUI.Label(text: suggestion, multiline: true)
                                  value: data[3][key]
 
                             menu_items.push item
@@ -68,8 +69,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                             cdata.conceptName = btn.getText()
                             # lock in form
                             cdata_form.getFieldsByName("conceptName")[0].storeValue(cdata.conceptName).displayValue()
-                            # nach eadb5-Update durch "setText" ersetzen und "__checkbox" rausnehmen
-                            cdata_form.getFieldsByName("conceptURI")[0].__checkbox.setText(cdata.conceptURI)
+                            cdata_form.getFieldsByName("conceptURI")[0].setText(cdata.conceptURI)
                             cdata_form.getFieldsByName("conceptURI")[0].show()
 
                             # clear searchbar
@@ -80,10 +80,10 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                   if itemList.items.length == 0
                        itemList =
                             items: [
-                                 text: "kein Treffer"
+                                 text: $$('custom.data.type.gvk.modal.form.text.no_hit')
                                  value: undefined
                             ]
-
+                  
                   suggest_Menu.setItemList(itemList)
 
                   suggest_Menu.show()

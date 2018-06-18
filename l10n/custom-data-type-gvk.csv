@@ -18,3 +18,4 @@ custom.data.type.gvk.modal.form.text.result.label,Gewählter Eintrag,Choosen ent
 custom.data.type.gvk.modal.form.text.result.placeholder,noch leer,empty,,
 custom.data.type.gvk.modal.form.text.uri.label,Zugehörige URI,Associated URI,,
 custom.data.type.gvk.modal.form.text.uri.label.placeholder,noch leer,empty,,
+custom.data.type.gvk.modal.form.text.no_hit,Kein Treffer,No hit,,
