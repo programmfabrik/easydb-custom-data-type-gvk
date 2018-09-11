@@ -14,15 +14,19 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
 
      #######################################################################
      # handle suggestions-menu
-     __updateSuggestionsMenu: (cdata, cdata_form, suggest_Menu, searchsuggest_xhr) ->
+     __updateSuggestionsMenu: (cdata, cdata_form, searchstring, input, suggest_Menu, searchsuggest_xhr, layout) ->
           that = @
 
           delayMillisseconds = 200
 
           setTimeout ( ->
 
-              gvk_searchterm = cdata_form.getFieldsByName("searchbarInput")[0].getValue()
-              gvk_countSuggestions = cdata_form.getFieldsByName("countOfSuggestions")[0].getValue()
+              gvk_searchterm = searchstring
+              gvk_countSuggestions = 20
+
+              if (cdata_form)
+                gvk_searchterm = cdata_form.getFieldsByName("searchbarInput")[0].getValue()
+                gvk_countSuggestions = cdata_form.getFieldsByName("countOfSuggestions")[0].getValue()
 
               if gvk_searchterm.length == 0
                   return
@@ -67,13 +71,13 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                             # lock in save data
                             cdata.conceptURI = btn.getOpt("value")
                             cdata.conceptName = btn.getText()
-                            # lock in form
-                            cdata_form.getFieldsByName("conceptName")[0].storeValue(cdata.conceptName).displayValue()
-                            cdata_form.getFieldsByName("conceptURI")[0].setText(cdata.conceptURI)
-                            cdata_form.getFieldsByName("conceptURI")[0].show()
-
-                            # clear searchbar
-                            cdata_form.getFieldsByName("searchbarInput")[0].setValue('')
+                            # update the layout in form
+                            that.__updateResult(cdata, layout)
+                            # hide suggest-menu
+                            suggest_Menu.hide()
+                            # close popover
+                            if that.popover
+                              that.popover.hide()
                        items: menu_items
 
                   # if no hits set "empty" message to menu
@@ -83,7 +87,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                                  text: $$('custom.data.type.gvk.modal.form.text.no_hit')
                                  value: undefined
                             ]
-                  
+
                   suggest_Menu.setItemList(itemList)
 
                   suggest_Menu.show()
@@ -131,26 +135,6 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                         label: $$("custom.data.type.gvk.modal.form.text.searchbar")
                     placeholder: $$("custom.data.type.gvk.modal.form.text.searchbar.placeholder")
                     name: "searchbarInput"
-               }
-               {
-                    form:
-                         label: $$('custom.data.type.gvk.modal.form.text.result.label')
-                    type: CUI.Output
-                    name: "conceptName"
-                    data: {conceptName: cdata.conceptName}
-               }
-               {
-                    form:
-                         label: $$('custom.data.type.gvk.modal.form.text.uri.label')
-                    type: CUI.FormButton
-                    name: "conceptURI"
-                    icon: new CUI.Icon(class: "fa-lightbulb-o")
-                    text: cdata.conceptURI
-                    onClick: (evt,button) =>
-                         window.open cdata.conceptURI, "_blank"
-                    onRender : (_this) =>
-                         if cdata.conceptURI == ''
-                              _this.hide()
                }]
 
           fields
@@ -171,12 +155,26 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
         # if status is ok
         conceptURI = CUI.parseLocation(cdata.conceptURI).url
 
-        # output Button with Name of literature-entry
-        new CUI.ButtonHref
-             appearance: "link"
-             href: cdata.conceptURI
-             target: "_blank"
-             text: cdata.conceptName
+        # output Button with Name of picked entry and URI
+        new CUI.HorizontalLayout
+          maximize: false
+          left:
+            content:
+              new CUI.Label
+                centered: false
+                multiline: true
+                text: cdata.conceptName
+          center:
+            content:
+              # output Button with Name of picked Entry and Url to the Source
+              new CUI.ButtonHref
+                appearance: "link"
+                href: conceptURI
+                target: "_blank"
+                tooltip:
+                  markdown: true
+                text: " "
+          right: null
         .DOM
 
      #######################################################################
