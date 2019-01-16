@@ -10,7 +10,6 @@ INSTALL_FILES = \
     $(WEB)/l10n/cultures.json \
     $(WEB)/l10n/de-DE.json \
     $(WEB)/l10n/en-US.json \
-    $(WEB)/custom-data-type-gvk.scss \
     $(JS) \
     $(CSS) \
     CustomDataTypeGVK.config.yml
