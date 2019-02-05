@@ -8,6 +8,16 @@ The Plugins uses <https://ws.gbv.de/suggest/csl/> for the autocomplete-suggestio
 
 none yet
 
+## saved data
+* conceptName
+    * Preferred label of the linked record
+* conceptURI
+    * URI to linked record
+* _fulltext
+    * easydb-fulltext
+* _standard
+    * easydb-standard
+
 ## sources
 
 The source code of this plugin is managed in a git repository at <https://github.com/programmfabrik/easydb-custom-data-type-gvk>. Please use [the issue tracker](https://github.com/programmfabrik/easydb-custom-data-type-gvk/issues) for bug reports and feature requests!
