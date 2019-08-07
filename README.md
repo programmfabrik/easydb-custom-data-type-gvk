@@ -1,3 +1,9 @@
+> This Plugin / Repo is being maintained by a community of developers.
+There is no warranty given or bug fixing guarantee; especially not by
+Programmfabrik GmbH. Please use the github issue tracking to report bugs
+and self organize bug fixing. Feel free to directly contact the committing
+developers.
+
 # easydb-custom-data-type-gvk
 
 This is a plugin for [easyDB 5](http://5.easydb.de/) with Custom Data Type `CustomDataTypeGVK` for references to entities of the [Gemeinsamer Verbundkatalog (GVK)](https://gso.gbv.de).
