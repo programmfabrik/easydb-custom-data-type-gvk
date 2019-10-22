@@ -19,3 +19,5 @@ custom.data.type.gvk.modal.form.text.result.placeholder,noch leer,empty,,
 custom.data.type.gvk.modal.form.text.uri.label,Zugehörige URI,Associated URI,,
 custom.data.type.gvk.modal.form.text.uri.label.placeholder,noch leer,empty,,
 custom.data.type.gvk.modal.form.text.no_hit,Kein Treffer,No hit,,
+custom.data.type.gvk.config.parameter.mask.useCustomDatabases.value.label,Eigene Datenbanken (|-separiert),Custom databases (|-seperated)
+custom.data.type.gnd.modal.form.text.database,Datenbank,Database

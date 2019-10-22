@@ -17,14 +17,16 @@ INSTALL_FILES = \
 COFFEE_FILES = easydb-library/src/commons.coffee \
     src/webfrontend/CustomDataTypeGVK.coffee
 
-SCSS_FILES = src/webfrontend/scss/main.scss
+CSS_FILE = src/webfrontend/css/main.css
 
 all: build
 
 include easydb-library/tools/base-plugins.make
 
-build: code css
+build:	code
+				mkdir -p build/webfrontend/css
+				cat $(CSS_FILE) >> build/webfrontend/custom-data-type-gvk.css
 
-code: $(JS) $(L10N) 
+code: $(JS) $(L10N)
 
 clean: clean-base

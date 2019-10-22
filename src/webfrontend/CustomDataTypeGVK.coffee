@@ -23,10 +23,14 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
 
               gvk_searchterm = searchstring
               gvk_countSuggestions = 20
+              gvk_database = ''
 
               if (cdata_form)
                 gvk_searchterm = cdata_form.getFieldsByName("searchbarInput")[0].getValue()
                 gvk_countSuggestions = cdata_form.getFieldsByName("countOfSuggestions")[0].getValue()
+                gvk_database = ''
+                if cdata_form.getFieldsByName("gndSelectDatabase")[0].getValue()
+                  gvk_database = '&database=' + cdata_form.getFieldsByName("gndSelectDatabase")[0].getValue()
 
               if gvk_searchterm.length == 0
                   return
@@ -37,7 +41,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                   searchsuggest_xhr.xhr.abort()
               # start new request
               # build searchurl
-              url = location.protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions
+              url = location.protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions + gvk_database
               searchsuggest_xhr.xhr = new (CUI.XHR)(url: url)
               searchsuggest_xhr.xhr.start().done((data, status, statusText) ->
 
@@ -100,6 +104,18 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
      #######################################################################
      # create form
      __getEditorFields: (cdata) ->
+          databases = @getCustomMaskSettings().useCustomDatabases?.value.split('|')
+          databaseOptions = []
+          if databases.length > 0
+            for database in databases
+              databaseConfig = database.split('=')
+              if databaseConfig.length == 2
+                option = (
+                    value: databaseConfig[1]
+                    text: databaseConfig[0]
+                  )
+                databaseOptions.push option
+
           fields = [
                {
                     type: CUI.Select
@@ -136,6 +152,18 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                     placeholder: $$("custom.data.type.gvk.modal.form.text.searchbar.placeholder")
                     name: "searchbarInput"
                }]
+
+          if databaseOptions.length > 0
+             databaseSelect = {
+               type: CUI.Select
+               undo_and_changed_support: false
+               form:
+                   label: $$('custom.data.type.gnd.modal.form.text.database')
+               options: databaseOptions
+               name: 'gndSelectDatabase'
+               class: 'commonPlugin_Select'
+             }
+             fields.unshift(databaseSelect)
 
           fields
 

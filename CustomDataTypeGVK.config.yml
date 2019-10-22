@@ -22,3 +22,9 @@ custom_types:
         type: text
       conceptURI:
         type: text
+    config:
+      mask:
+        - name: useCustomDatabases
+          parameters:
+            value:
+              type: text

@@ -12,7 +12,8 @@ The Plugins uses <https://ws.gbv.de/suggest/csl/> for the autocomplete-suggestio
 
 ## configuration
 
-none yet
+* mask config:
+    * useCustomDatabases - example: "VD17=1.28|VD18=1.65|"
 
 ## saved data
 * conceptName
@@ -27,4 +28,3 @@ none yet
 ## sources
 
 The source code of this plugin is managed in a git repository at <https://github.com/programmfabrik/easydb-custom-data-type-gvk>. Please use [the issue tracker](https://github.com/programmfabrik/easydb-custom-data-type-gvk/issues) for bug reports and feature requests!
-
