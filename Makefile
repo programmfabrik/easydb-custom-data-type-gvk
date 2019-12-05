@@ -12,10 +12,14 @@ INSTALL_FILES = \
     $(WEB)/l10n/en-US.json \
     $(JS) \
     $(CSS) \
-    CustomDataTypeGVK.config.yml
+    CustomDataTypeGVK.config.yml \
+	 	build/updater/gvk-update.js
 
 COFFEE_FILES = easydb-library/src/commons.coffee \
     src/webfrontend/CustomDataTypeGVK.coffee
+
+UPDATE_SCRIPT_COFFEE_FILES = \
+	src/updater/GVKUpdate.coffee
 
 CSS_FILE = src/webfrontend/css/main.css
 
@@ -23,10 +27,18 @@ all: build
 
 include easydb-library/tools/base-plugins.make
 
-build:	code
+build:	code buildupdater
 				mkdir -p build/webfrontend/css
 				cat $(CSS_FILE) >> build/webfrontend/custom-data-type-gvk.css
+
+buildupdater: $(subst .coffee,.coffee.js,${UPDATE_SCRIPT_COFFEE_FILES})
+	mkdir -p build/updater
+	cat $^ > build/updater/gvk-update.js
 
 code: $(JS) $(L10N)
 
 clean: clean-base
+
+wipe: wipe-base
+
+.PHONY: clean wipe

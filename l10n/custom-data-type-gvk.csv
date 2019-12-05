@@ -21,3 +21,5 @@ custom.data.type.gvk.modal.form.text.uri.label.placeholder,noch leer,empty,,
 custom.data.type.gvk.modal.form.text.no_hit,Kein Treffer,No hit,,
 custom.data.type.gvk.config.parameter.mask.useCustomDatabases.value.label,Eigene Datenbanken (|-separiert),Custom databases (|-seperated)
 custom.data.type.gnd.modal.form.text.database,Datenbank,Database
+server.config.name.system.update_interval_gvk,GVK-Update-Einstellungen,GVK-Update-Settings
+server.config.parameter.system.update_interval_gvk.days.label,Tage zwischen Updates,Days between updates

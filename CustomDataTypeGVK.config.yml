@@ -1,6 +1,6 @@
 plugin:
   name: custom-data-type-gvk
-  version: 1.0
+  version: 1.5
   url: https://github.com/programmfabrik/easydb-custom-data-type-gvk
   displayname:
     de-DE: GVK-Verknüpfung
@@ -17,6 +17,11 @@ plugin:
     css: custom-data-type-gvk.css
 custom_types:
   gvk:
+    update:
+      script: build/updater/gvk-update.js
+      timeout: 60
+      batch_size: 100
+      interval_base_config: update_interval_gvk.days
     mapping:
       conceptName:
         type: text
@@ -28,3 +33,12 @@ custom_types:
           parameters:
             value:
               type: text
+base_config:
+  - name: update_interval_gvk
+    group: update_custom_data_type
+    parameters:
+      days:
+        type: int
+        min: 0
+        default: 0
+        position: 0
