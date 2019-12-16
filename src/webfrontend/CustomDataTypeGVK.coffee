@@ -29,8 +29,9 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                 gvk_searchterm = cdata_form.getFieldsByName("searchbarInput")[0].getValue()
                 gvk_countSuggestions = cdata_form.getFieldsByName("countOfSuggestions")[0].getValue()
                 gvk_database = ''
-                if cdata_form.getFieldsByName("gndSelectDatabase")[0].getValue()
-                  gvk_database = '&database=' + cdata_form.getFieldsByName("gndSelectDatabase")[0].getValue()
+                if cdata_form.getFieldsByName("gndSelectDatabase").length > 0
+                  if cdata_form.getFieldsByName("gndSelectDatabase")[0].getValue()
+                    gvk_database = '&database=' + cdata_form.getFieldsByName("gndSelectDatabase")[0].getValue()
 
               if gvk_searchterm.length == 0
                   return
@@ -106,7 +107,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
      __getEditorFields: (cdata) ->
           databases = @getCustomMaskSettings().useCustomDatabases?.value.split('|')
           databaseOptions = []
-          if databases            
+          if Array.isArray databases
             if databases.length > 0
               for database in databases
                 databaseConfig = database.split('=')
@@ -116,7 +117,6 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                       text: databaseConfig[0]
                     )
                   databaseOptions.push option
-
           fields = [
                {
                     type: CUI.Select
