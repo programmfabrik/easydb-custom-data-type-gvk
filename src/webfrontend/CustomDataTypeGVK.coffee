@@ -106,15 +106,16 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
      __getEditorFields: (cdata) ->
           databases = @getCustomMaskSettings().useCustomDatabases?.value.split('|')
           databaseOptions = []
-          if databases.length > 0
-            for database in databases
-              databaseConfig = database.split('=')
-              if databaseConfig.length == 2
-                option = (
-                    value: databaseConfig[1]
-                    text: databaseConfig[0]
-                  )
-                databaseOptions.push option
+          if databases            
+            if databases.length > 0
+              for database in databases
+                databaseConfig = database.split('=')
+                if databaseConfig.length == 2
+                  option = (
+                      value: databaseConfig[1]
+                      text: databaseConfig[0]
+                    )
+                  databaseOptions.push option
 
           fields = [
                {
