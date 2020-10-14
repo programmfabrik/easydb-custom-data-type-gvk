@@ -76,6 +76,8 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                             # lock in save data
                             cdata.conceptURI = btn.getOpt("value")
                             cdata.conceptName = btn.getText()
+                            cdata._standard = []
+                            cdata._standard.text = cdata.conceptName
                             # update the layout in form
                             that.__updateResult(cdata, layout, opts)
                             # hide suggest-menu
