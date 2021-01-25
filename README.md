@@ -6,9 +6,9 @@ developers.
 
 # easydb-custom-data-type-gvk
 
-This is a plugin for [easyDB 5](http://5.easydb.de/) with Custom Data Type `CustomDataTypeGVK` for references to entities of the [Gemeinsamer Verbundkatalog (GVK)](https://gso.gbv.de).
+This is a plugin for [easyDB 5](http://5.easydb.de/) with Custom Data Type `CustomDataTypeGVK` for references to entities of the [Gemeinsame Datenbank k10plus](https://kxp.k10plus.de/).
 
-The Plugins uses <https://ws.gbv.de/suggest/csl/> for the autocomplete-suggestions.
+The Plugins uses <https://ws.gbv.de/suggest/csl2/> for the autocomplete-suggestions.
 
 ## configuration
 

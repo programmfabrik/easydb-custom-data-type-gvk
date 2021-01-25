@@ -42,7 +42,7 @@ class CustomDataTypeGVK extends CustomDataTypeWithCommons
                   searchsuggest_xhr.xhr.abort()
               # start new request
               # build searchurl
-              url = location.protocol + '//ws.gbv.de/suggest/csl/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions + gvk_database
+              url = location.protocol + '//ws.gbv.de/suggest/csl2/?query=pica.all=' + gvk_searchterm + '&citationstyle=ieee&language=de&count=' + gvk_countSuggestions + gvk_database
               searchsuggest_xhr.xhr = new (CUI.XHR)(url: url)
               searchsuggest_xhr.xhr.start().done((data, status, statusText) ->
 
