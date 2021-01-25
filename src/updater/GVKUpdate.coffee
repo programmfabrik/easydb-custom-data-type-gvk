@@ -53,7 +53,7 @@ class GVKUpdate
     for GVKId, key in GVKIds
       do(key, GVKId) ->
         # get updates from csl-service
-        xurl = 'https://ws.gbv.de/suggest/csl/?query=pica.ppn=' + GVKId + '&citationstyle=ieee&language=de&count=1'
+        xurl = 'https://ws.gbv.de/suggest/csl2/?query=pica.ppn=' + GVKId + '&citationstyle=ieee&language=de&count=1'
 
         growingTimeout = key * 100
         setTimeout ( ->
