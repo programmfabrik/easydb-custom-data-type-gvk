@@ -26,7 +26,7 @@ all: build
 
 include easydb-library/tools/base-plugins.make
 
-build:	code buildupdater
+build:	code buildupdater buildinfojson
 				mkdir -p build/webfrontend/css
 				cat $(CSS_FILE) >> build/webfrontend/custom-data-type-gvk.css
 
