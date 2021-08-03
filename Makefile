@@ -11,8 +11,8 @@ INSTALL_FILES = \
     $(WEB)/l10n/en-US.json \
     $(JS) \
     $(CSS) \
-    CustomDataTypeGVK.config.yml \
-	 	build/updater/gvk-update.js
+    manifest.yml \
+	build/updater/gvk-update.js
 
 COFFEE_FILES = easydb-library/src/commons.coffee \
     src/webfrontend/CustomDataTypeGVK.coffee
