@@ -1,4 +1,5 @@
 PLUGIN_NAME = custom-data-type-gvk
+PLUGIN_PATH = easydb-custom-data-type-gvk
 
 L10N_FILES = easydb-library/src/commons.l10n.csv \
     l10n/$(PLUGIN_NAME).csv
@@ -11,8 +12,8 @@ INSTALL_FILES = \
     $(WEB)/l10n/en-US.json \
     $(JS) \
     $(CSS) \
-    CustomDataTypeGVK.config.yml \
-	 	build/updater/gvk-update.js
+    manifest.yml \
+	build/updater/gvk-update.js
 
 COFFEE_FILES = easydb-library/src/commons.coffee \
     src/webfrontend/CustomDataTypeGVK.coffee
@@ -26,7 +27,7 @@ all: build
 
 include easydb-library/tools/base-plugins.make
 
-build:	code buildupdater
+build:	code buildupdater buildinfojson
 				mkdir -p build/webfrontend/css
 				cat $(CSS_FILE) >> build/webfrontend/custom-data-type-gvk.css
 
