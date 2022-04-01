@@ -36,7 +36,6 @@ class GVKUpdate
     GVKIds = GVKIds.filter((x, i, a) => a.indexOf(x) == i)
 
     objectsToUpdate = []
-    console.error GVKIds
 
     # update the uri's one after the other
     chunkWorkPromise = CUI.chunkWork.call(@,
@@ -44,7 +43,6 @@ class GVKUpdate
       chunk_size: 1
       call: (items) =>
         GVKId = items[0]
-        console.error "GVKid: " + GVKId
         # get updates from csl-service
         xurl = 'https://ws.gbv.de/suggest/csl2/?query=pica.ppn=' + GVKId + '&citationstyle=ieee&language=de&count=1'
         deferred = new CUI.Deferred()
