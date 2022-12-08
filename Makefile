@@ -3,8 +3,6 @@ PLUGIN_PATH = easydb-custom-data-type-gvk
 
 L10N_FILES = easydb-library/src/commons.l10n.csv \
     l10n/$(PLUGIN_NAME).csv
-L10N_GOOGLE_KEY = 1ux8r_kpskdAwTaTjqrk92up5eyyILkpsv4k96QltmI0
-L10N_GOOGLE_GID = 1040395818
 
 INSTALL_FILES = \
     $(WEB)/l10n/cultures.json \
@@ -13,7 +11,7 @@ INSTALL_FILES = \
     $(JS) \
     $(CSS) \
     manifest.yml \
-	build/updater/gvk-update.js
+    build/updater/gvk-update.js
 
 COFFEE_FILES = easydb-library/src/commons.coffee \
     src/webfrontend/CustomDataTypeGVK.coffee

@@ -60,7 +60,6 @@ class GVKUpdate
             # then build new cdata and aggregate in objectsMap (see below)
             updatedGVKcdata = {}
             updatedGVKcdata.conceptURI = gvkURI
-            #updatedGNDcdata.conceptName = Date.now() + '_' + data['preferredName']
             updatedGVKcdata.conceptName = data[1][0]
 
             updatedGVKcdata._standard =
@@ -68,6 +67,7 @@ class GVKUpdate
 
             updatedGVKcdata._fulltext =
               string: updatedGVKcdata.conceptName + ' ' + gvkURI + ' ' + gvkID
+
             if !objectsMap[resultsGVKID]
               console.error "GVK nicht in objectsMap: " + resultsGVKID
               console.error "da hat sich die PPN von " + GVKId + " zu " + resultsGVKID + " geändert"
